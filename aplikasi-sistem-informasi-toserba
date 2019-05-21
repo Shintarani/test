@@ -1,0 +1,241 @@
+#include <iostream>
+#include <conio.h>
+#include <stdlib.h>
+#include <iomanip>
+#include <string.h>
+
+using namespace std;
+
+void header();
+int daftarbarang();
+int menutama();
+int orderbarang();
+int lagikah();
+
+int main()
+{
+char uname[12]="admin",user[12];
+char password[12]="12345",pw[12];
+int k=1;
+
+system("color f0");
+login:
+cout<<" "<<setfill('=')<<setw(78)<<""<<endl;
+cout<<" "<<setfill(' ')<<setw(47)<<"Silahkan  Login"<<endl;
+cout<<" "<<setfill('=')<<setw(78)<<""<<endl;
+cout<<endl<<"  Masukkan Username : "; cin.getline(user,12);
+cout<<endl<<"  Masukkan Password : "; cin.getline(pw,12);
+
+if(strcmpi(uname, user)==0 && strcmpi(password, pw)==0)
+    {
+        system("cls");
+        return menutama();
+    }
+else
+    {
+        cout<<endl<<"  Username dan Password SALAH ("<<k<<"x)";
+        k++;
+        if(k<=3)
+        {
+            cout<<endl<<"  Silahkan coba lagi ! ";
+            getch();
+            system("cls");
+            goto login;
+        }
+        else
+        {
+            getch();
+            return 0;
+        }
+    }
+}
+
+int menutama()
+{
+char menuutama;
+header();
+cout<<"                        Selamat Datang di Toserba Mandiri"<<endl;
+cout<<" "<<setfill(' ')<<setw(45)<<"MENU  UTAMA"<<endl<<endl;
+cout<<"  1. Kode dan Harga Barang"<<endl;
+cout<<"  2. Order Barang"<<endl;
+cout<<"  3. Clear Screen"<<endl;
+cout<<"  4. Exit"<<endl;
+cout<<endl<<"     Pilih Menu = "; cin>>menuutama;
+
+if(menuutama=='1')
+    {
+        system("cls");
+        return daftarbarang();
+    }
+else if(menuutama=='2')
+    {
+        system("cls");
+        return orderbarang();
+    }
+else if(menuutama=='3')
+    {
+        system("cls");
+        return menutama();
+    }
+else if(menuutama=='4')
+    {
+        return 0;
+    }
+else
+    {
+        cout<<endl<<"  YANG ANDA INPUTKAN SALAH !\n  SILAHKAN COBA KEMBALI"<<endl<<endl;
+        return menutama();
+    }
+}
+
+int orderbarang()
+{
+int a, x, y;
+long int totalakhir,totalsa,total=0,bayar[15],ppn,diskon;
+int jumlah[15],jumlahbar[15],kodebar[15];
+char* namabar[15];
+long int hargabar[15];
+int kode[15]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+long int harga[15]={21000,5000,17000,4000,3000,12000,13000,3000,19000,55000,8000,17000,13000,9000,6000};
+char nama[15][50]={"Minyak Goreng","Buku Tulis","Kecap Manis","Sabun Mandi","Pulpen","Gula Pasir","Shampoo","Mie Instan","Deterjen","Beras","Pasta Gigi","Sirup","Sabun Cuci Piring","Sarden","Saus Sambal"};
+
+    header();
+    cout<<" "<<setfill(' ')<<setw(46)<<"Order  Barang"<<endl<<endl;
+    cout<<"  SILAHKAN ORDER BARANG YANG DIINGINKAN : "; cin>>a;
+    if(a>15)
+        {
+            cout<<endl<<" Silahkan Pilih Barang";
+            getch();+
+            system("cls");
+            return menutama();
+        }
+    else if(a<=0)
+        {
+            cout<<endl<<" INPUTAN YANG ANDA MASUKKAN SALAH !";
+            getch();
+            system("cls");
+            return menutama();
+        }
+    for(y=0;y<a;y++)
+        {
+            inputx:
+            cout<<endl<<y+1<<". Kode Barang    = "; cin>>x;
+            if(x>15||x<=0)
+                {
+                    cout<<"     Barang Tidak Ada ! Silahkan Input Ulang !"<<endl;
+                    getch();
+                    goto inputx;
+                }
+            x=x-1;
+            cout<<"   Nama Barang    = "<<nama[x];
+            cout<<endl<<"   Harga Barang   = "<<harga[x];
+            cout<<endl<<"   Jumlah Barang  = "; cin>>jumlah[x];
+            kodebar[y]=kode[x];
+            namabar[y]=nama[x];
+            hargabar[y]=harga[x];
+            jumlahbar[y]=jumlah[x];
+            bayar[y]=jumlahbar[y]*hargabar[y];
+            getch();
+        }
+system("cls");
+header();
+cout<<" "<<setfill(' ')<<setw(4)<<"No."<<setw(2)<<"|"<<setw(5)<<"Kode"<<setw(2)<<"|"<<setw(19)<<"Nama Barang"<<setw(9)<<"|"<<setw(8)<<"Harga"<<setw(4)<<"|"<<setw(7)<<"Jumlah"<<setw(2)<<"|"<<setw(14)<<"Jumlah Bayar"<<endl;
+cout<<" "<<setfill('-')<<setw(78)<<""<<endl;
+y=0;
+do{
+        total+=bayar[y];
+        cout<<setiosflags(ios::right);
+        cout<<" "<<setfill(' ');
+        cout<<setw(4)<<y+1;
+        cout<<setw(2)<<"|";
+        cout<<setw(5)<<kodebar[y];
+        cout<<setw(2)<<"|";
+        cout<<setw(26)<<namabar[y];
+        cout<<setw(2)<<"|";
+        cout<<setw(10)<<hargabar[y];
+        cout<<setw(2)<<"|";
+        cout<<setw(7)<<jumlahbar[y];
+        cout<<setw(2)<<"|";
+        cout<<setw(14)<<bayar[y]<<endl;
+        y++;
+    }while(y<a);
+    cout<<" "<<setfill('=')<<setw(78)<<""<<endl;
+    cout<<"  Total Bayar    = Rp. "<<total<<",-"<<endl;
+    if(total>500000)
+    {
+        diskon=total*5*0.01;
+        total=total-diskon;
+    }
+    else
+    {
+        diskon=0;
+    }
+    cout<<"  Diskon         = Rp. "<<diskon<<",-"<<endl;
+    cout<<"  Total          = Rp. "<<total<<",-"<<endl;
+    cout<<" "<<setfill('=')<<setw(78)<<""<<endl;
+    cout<<"                TERIMAKASIH TELAH BERBELANJA Toserba Mandiri";
+getch();
+    lagikah();
+}
+
+void header()
+{
+    cout<<" "<<setfill('=')<<setw(78)<<""<<endl;
+    cout<<" "<<setfill(' ')<<setw(47)<<"Toserba Mandiri"<<endl;
+    cout<<" "<<setfill('=')<<setw(78)<<""<<endl;
+    return;
+}
+
+int daftarbarang()
+{
+    long int harga[15]={21000,5000,17000,4000,3000,12000,13000,3000,19000,55000,8000,17000,13000,9000,6000};
+    header();
+        cout<<" "<<setfill(' ')<<setw(50)<<"Kode dan Harga Barang"<<endl<<endl;
+        cout<<"  1  = Minyak Goreng     = Rp. "<<harga[0]<<",-"<<endl;
+        cout<<"  2  = Buku Tulis        = Rp. "<<harga[1]<<",-"<<endl;
+        cout<<"  3  = Kecap Manis       = Rp. "<<harga[2]<<",-"<<endl;
+        cout<<"  4  = Sabun Mandi       = Rp. "<<harga[3]<<",-"<<endl;
+        cout<<"  5  = Pulpen            = Rp. "<<harga[4]<<",-"<<endl;
+        cout<<"  6  = Gula Pasir        = Rp. "<<harga[5]<<",-"<<endl;
+        cout<<"  7  = Shampoo           = Rp. "<<harga[6]<<",-"<<endl;
+        cout<<"  8  = Mie Instan        = Rp. "<<harga[7]<<",-"<<endl;
+        cout<<"  9  = Deterjen          = Rp. "<<harga[8]<<",-"<<endl;
+        cout<<"  10 = Beras             = Rp. "<<harga[9]<<",-"<<endl;
+        cout<<"  11 = Pasta Gigi        = Rp. "<<harga[10]<<",-"<<endl;
+        cout<<"  12 = Sirup             = Rp. "<<harga[11]<<",-"<<endl;
+        cout<<"  13 = Sabun Cuci Piring = Rp. "<<harga[12]<<",-"<<endl;
+        cout<<"  14 = Sarden            = Rp. "<<harga[13]<<",-"<<endl;
+        cout<<"  15 = Saus Sambal       = Rp. "<<harga[14]<<",-"<<endl;
+        cout<<"  Diskon 5% Jika anda berbelanja lebih dari 500000"<<endl<<endl;
+        cout<<"  Tekan Enter Untuk Kembali Ke Menu Utama"<<endl<<endl;
+        getch();
+        return menutama();
+}
+
+int lagikah()
+{
+    char pilih;
+    cout<<endl<<endl<<"  Kembali ke Menu Utama (1) / Order Lagi (2) / Exit (3) = "; cin>>pilih;
+
+    if(pilih=='1')
+    {
+        system("cls");
+        return menutama();
+    }
+    else if(pilih=='2')
+    {
+        system("cls");
+        return orderbarang();
+    }
+    else if(pilih=='3')
+    {
+        getch();
+        return 0;
+    }
+    else
+    {
+        cout<<endl<<"  YANG ANDA INPUTKAN SALAH ! SILAHKAN COBA LAGI !";
+        getch();
+        return lagikah();
+    }
+}
